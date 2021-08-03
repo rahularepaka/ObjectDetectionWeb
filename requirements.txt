@@ -1,0 +1,6 @@
+opencv-python
+numpy
+streamlit
+pandas
+time
+streamlit-webrtc
