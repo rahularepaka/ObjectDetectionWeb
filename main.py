@@ -33,8 +33,8 @@ with open("coco.names", 'rt') as f:
     class_names = f.read().rstrip('\n').split('\n')
 
 # configration and weights file location
-model_config_file = "yolo-config\\yolov3-tiny.cfg"
-model_weight = "yolo-weights\\yolov3-tiny.weights"
+model_config_file = "/app/objectdetectionweb/yolo-config/yolov3-tiny.cfg"
+model_weight = "/app/objectdetectionweb/yolo-weights/yolov3-tiny.weights"
 
 # darknet files
 net = cv2.dnn.readNetFromDarknet(model_config_file, model_weight)
