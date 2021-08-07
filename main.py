@@ -12,10 +12,6 @@ from streamlit_webrtc import (
     webrtc_streamer,
 )
 
-HERE = Path(__file__).parent
-
-logger = logging.getLogger(__name__)
-
 
 WEBRTC_CLIENT_SETTINGS = ClientSettings(
     rtc_configuration={"iceServers": [
@@ -29,7 +25,7 @@ WEBRTC_CLIENT_SETTINGS = ClientSettings(
 st.set_page_config(page_title="Object Detection", page_icon="🤖")
 
 
-st.title("Lite Object Detection WebApp")
+st.title("Lite Object Detection WebApp - I")
 st.subheader(
     "Using COCO Dataset, YOLO-Tiny v3.0 Weight and Configuration files")
 
