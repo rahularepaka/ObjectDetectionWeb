@@ -62,11 +62,9 @@ with open("coco.names", 'rt') as f:
     class_names = f.read().rstrip('\n').split('\n')
 
 # configration and weights file location
-model_config_file = "/app/objectdetectionweb/yolo-config/yolov3-tiny.cfg"
-#model_config_file = "yolo-config\\yolov3-tiny.cfg"
+model_config_file = "yolo-config\\yolov3-tiny.cfg"
 
-model_weight = "/app/objectdetectionweb/yolo-weights/yolov3-tiny.weights"
-#model_weight = "yolo-weights\\yolov3-tiny.weights"
+model_weight = "yolo-weights\\yolov3-tiny.weights"
 
 # darknet files
 net = cv2.dnn.readNetFromDarknet(model_config_file, model_weight)
@@ -156,10 +154,10 @@ st.write(df)
 st.subheader("How does it work ?")
 st.text("Here is visualization of the algorithm")
 
-st.image("/app/objectdetectionweb/Media/pic1.png", caption="YOLO Object Detection of 'Dog', 'Bicycle, 'Car'", width=None, use_column_width=None,
+st.image("Media\\pic1.png", caption="YOLO Object Detection of 'Dog', 'Bicycle, 'Car'", width=None, use_column_width=None,
          clamp=False, channels='RGB', output_format='auto')
 
-st.image("/app/objectdetectionweb/Media/pic2.png", caption="Algorithm", width=None, use_column_width=None,
+st.image("Media\\pic2.png", caption="Algorithm", width=None, use_column_width=None,
          clamp=False, channels='RGB', output_format='auto')
 
 
@@ -174,7 +172,7 @@ You can see how this works in the [see the code](https://github.com/rahularepaka
 """)
 
 
-with st.expander("Source Code"):
+with st.beta_expander("Source Code"):
 
     code = '''
     
@@ -259,7 +257,7 @@ with st.expander("Source Code"):
     st.code(code, language='python')
 
 
-with st.expander("License"):
+with st.beta_expander("License"):
 
     st.markdown("""
                 
@@ -294,22 +292,3 @@ st.markdown(
 st.info("Feel free to edit with the source code and enjoy coding")
 
 
-if __name__ == "__main__":
-    import os
-
-    DEBUG = os.environ.get("DEBUG", "false").lower() not in [
-        "false", "no", "0"]
-
-    logging.basicConfig(
-        format="[%(asctime)s] %(levelname)7s from %(name)s in %(pathname)s:%(lineno)d: "
-        "%(message)s",
-        force=True,
-    )
-
-    logger.setLevel(level=logging.DEBUG if DEBUG else logging.INFO)
-
-    st_webrtc_logger = logging.getLogger("streamlit_webrtc")
-    st_webrtc_logger.setLevel(logging.DEBUG)
-
-    fsevents_logger = logging.getLogger("fsevents")
-    fsevents_logger.setLevel(logging.WARNING)
