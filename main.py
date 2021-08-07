@@ -1,9 +1,17 @@
 import cv2
-from streamlit_webrtc import VideoTransformerBase, webrtc_streamer
 import streamlit as st
 import numpy as np
 import pandas as pd
 import time
+
+from streamlit_webrtc import (
+    AudioProcessorBase,
+    ClientSettings,
+    VideoProcessorBase,
+    WebRtcMode,
+    webrtc_streamer,
+)
+
 
 st.set_page_config(page_title="Object Detection", page_icon="🤖")
 
