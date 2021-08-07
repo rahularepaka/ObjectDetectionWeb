@@ -4,35 +4,8 @@ import numpy as np
 import pandas as pd
 import time
 
-import asyncio
-import logging
-import queue
-import threading
-import urllib.request
-from pathlib import Path
+from streamlit_webrtc import VideoTransformerBase, webrtc_streamer
 
-
-from streamlit_webrtc import (
-    AudioProcessorBase,
-    ClientSettings,
-    VideoTransformerBase,
-    WebRtcMode,
-    webrtc_streamer,
-)
-
-HERE = Path(__file__).parent
-
-logger = logging.getLogger(__name__)
-
-
-WEBRTC_CLIENT_SETTINGS = ClientSettings(
-    rtc_configuration={"iceServers": [
-        {"urls": ["stun:stun.l.google.com:19302"]}]},
-    media_stream_constraints={
-        "video": True,
-        "audio": True,
-    },
-)
 
 st.set_page_config(page_title="Object Detection", page_icon="🤖")
 
@@ -131,13 +104,8 @@ class VideoTransformer(VideoTransformerBase):
         return img
 
 
-cap = webrtc_streamer(
-    key="example",
-    mode=WebRtcMode.SENDRECV,
-    client_settings=WEBRTC_CLIENT_SETTINGS,
-    video_transformer_factory=VideoTransformer,
-    async_processing=True,
-)
+webrtc_streamer(key="example", video_transformer_factory=VideoTransformer)
+
 
 
 st.error('Please allow access to camera and microphone inorder for this to work')
@@ -290,5 +258,3 @@ st.markdown(
     '''
 )
 st.info("Feel free to edit with the source code and enjoy coding")
-
-
