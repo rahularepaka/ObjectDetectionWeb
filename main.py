@@ -4,15 +4,41 @@ import numpy as np
 import pandas as pd
 import time
 
+import asyncio
+import logging
+import queue
+import threading
+import urllib.request
+from pathlib import Path
+from typing import List, NamedTuple
+
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literale
+
+
 from streamlit_webrtc import (
-    VideoTransformerBase,
     AudioProcessorBase,
     ClientSettings,
-    VideoProcessorBase,
+    VideoTransformerBase,
     WebRtcMode,
     webrtc_streamer,
 )
 
+HERE = Path(__file__).parent
+
+logger = logging.getLogger(__name__)
+
+
+WEBRTC_CLIENT_SETTINGS = ClientSettings(
+    rtc_configuration={"iceServers": [
+        {"urls": ["stun:stun.l.google.com:19302"]}]},
+    media_stream_constraints={
+        "video": True,
+        "audio": True,
+    },
+)
 
 st.set_page_config(page_title="Object Detection", page_icon="🤖")
 
@@ -43,7 +69,10 @@ with open("coco.names", 'rt') as f:
 
 # configration and weights file location
 model_config_file = "/app/objectdetectionweb/yolo-config/yolov3-tiny.cfg"
+#model_config_file = "yolo-config\\yolov3-tiny.cfg"
+
 model_weight = "/app/objectdetectionweb/yolo-weights/yolov3-tiny.weights"
+#model_weight = "yolo-weights\\yolov3-tiny.weights"
 
 # darknet files
 net = cv2.dnn.readNetFromDarknet(model_config_file, model_weight)
@@ -111,7 +140,13 @@ class VideoTransformer(VideoTransformerBase):
 
 
 cap = webrtc_streamer(
-    key="example", video_transformer_factory=VideoTransformer)
+    key="example",
+    mode=WebRtcMode.SENDRECV,
+    client_settings=WEBRTC_CLIENT_SETTINGS,
+    video_transformer_factory=VideoTransformer,
+    async_processing=True,
+)
+
 
 st.error('Please allow access to camera and microphone inorder for this to work')
 
@@ -143,6 +178,7 @@ and the configuration files and weights can be changed from the source code by d
 You can see how this works in the [see the code](https://github.com/rahularepaka/ObjectDetectionWeb).
 
 """)
+
 
 with st.expander("Source Code"):
 
@@ -262,3 +298,24 @@ st.markdown(
     '''
 )
 st.info("Feel free to edit with the source code and enjoy coding")
+
+
+if __name__ == "__main__":
+    import os
+
+    DEBUG = os.environ.get("DEBUG", "false").lower() not in [
+        "false", "no", "0"]
+
+    logging.basicConfig(
+        format="[%(asctime)s] %(levelname)7s from %(name)s in %(pathname)s:%(lineno)d: "
+        "%(message)s",
+        force=True,
+    )
+
+    logger.setLevel(level=logging.DEBUG if DEBUG else logging.INFO)
+
+    st_webrtc_logger = logging.getLogger("streamlit_webrtc")
+    st_webrtc_logger.setLevel(logging.DEBUG)
+
+    fsevents_logger = logging.getLogger("fsevents")
+    fsevents_logger.setLevel(logging.WARNING)
