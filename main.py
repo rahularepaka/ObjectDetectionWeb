@@ -135,7 +135,7 @@ You can see how this works in the [see the code](https://github.com/rahularepaka
 
 """)
 
-with st.beta_expander("Source Code"):
+with st.expander("Source Code"):
 
     code = '''
     
@@ -220,7 +220,7 @@ with st.beta_expander("Source Code"):
     st.code(code, language='python')
 
 
-with st.beta_expander("License"):
+with st.expander("License"):
 
     st.markdown("""
                 
