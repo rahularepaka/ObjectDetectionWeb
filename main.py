@@ -5,6 +5,7 @@ import pandas as pd
 import time
 
 from streamlit_webrtc import (
+    VideoTransformerBase
     AudioProcessorBase,
     ClientSettings,
     VideoProcessorBase,
